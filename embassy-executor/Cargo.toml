@@ -99,6 +99,9 @@ default-target = "thumbv7em-none-eabi"
 targets = ["thumbv7em-none-eabi"]
 features = ["defmt", "platform-cortex-m", "executor-thread", "executor-interrupt", "scheduler-deadline", "scheduler-priority", "embassy-time-driver"]
 
+[package.metadata.flux]
+enabled = true
+
 [dependencies]
 defmt = { version = "1.0.1", optional = true }
 log = { version = "0.4.14", optional = true }
@@ -126,6 +129,8 @@ js-sys = { version = "0.3", optional = true }
 
 # platform-avr dependencies
 avr-device = { version = "0.8.1", optional = true }
+
+flux-rs = { git  = "https://github.com/flux-rs/flux.git" }
 
 [dependencies.cordyceps]
 version = "0.3.5"

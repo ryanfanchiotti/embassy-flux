@@ -1,3 +1,5 @@
+#![flux::opts(allow_raw_deref = "ok")]
+
 use core::ptr::{NonNull, addr_of_mut};
 
 use cordyceps::Linked;
