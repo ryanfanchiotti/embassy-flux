@@ -141,6 +141,7 @@ impl Spawner {
     /// # Panics
     ///
     /// Panics if the current executor is not an Embassy executor.
+    #[flux::trusted]
     pub unsafe fn for_current_executor() -> impl Future<Output = Self> {
         poll_fn(|cx| {
             let task = raw::task_from_waker(cx.waker());
@@ -203,6 +204,7 @@ impl SendSpawner {
     /// # Panics
     ///
     /// Panics if the current executor is not an Embassy executor.
+    #[flux::trusted]
     pub fn for_current_executor() -> impl Future<Output = Self> {
         poll_fn(|cx| {
             let task = raw::task_from_waker(cx.waker());

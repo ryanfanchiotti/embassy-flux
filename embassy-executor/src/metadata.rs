@@ -30,6 +30,7 @@ impl MetadataRef {
     ///
     /// This function is `async` just to get access to the current async
     /// context. It returns instantly, it does not block/yield.
+    #[flux::trusted]
     pub fn for_current_task() -> impl Future<Output = Self> {
         poll_fn(|cx| Poll::Ready(Self::new(raw::task_from_waker(cx.waker()))))
     }

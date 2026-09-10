@@ -259,6 +259,7 @@ impl<F: Future + 'static> TaskStorage<F> {
     ///
     /// Once the task has finished running, you may spawn it again. It is allowed to spawn it
     /// on a different executor.
+    #[flux::trusted]
     pub fn spawn(&'static self, future: impl FnOnce() -> F) -> Result<SpawnToken<impl Sized>, SpawnError> {
         let task = AvailableTask::claim(self);
         match task {
@@ -405,6 +406,7 @@ impl<F: Future + 'static, const N: usize> TaskPool<F, N> {
     ///
     /// This will loop over the pool and spawn the task in the first storage that
     /// is currently free. If none is free, [`SpawnError::Busy`] is returned.
+    #[flux::trusted]
     pub fn spawn(&'static self, future: impl FnOnce() -> F) -> Result<SpawnToken<impl Sized>, SpawnError> {
         self.spawn_impl::<F>(future)
     }
@@ -418,6 +420,7 @@ impl<F: Future + 'static, const N: usize> TaskPool<F, N> {
     /// SAFETY: `future` must be a closure of the form `move || my_async_fn(args)`, where `my_async_fn`
     /// is an `async fn`, NOT a hand-written `Future`.
     #[doc(hidden)]
+    #[flux::trusted]
     pub unsafe fn _spawn_async_fn<FutFn>(&'static self, future: FutFn) -> Result<SpawnToken<impl Sized>, SpawnError>
     where
         FutFn: FnOnce() -> F,
