@@ -131,6 +131,7 @@ js-sys = { version = "0.3", optional = true }
 avr-device = { version = "0.8.1", optional = true }
 
 flux-rs = { git  = "https://github.com/flux-rs/flux.git" }
+flux-core = { git  = "https://github.com/flux-rs/flux.git" }
 
 [dependencies.cordyceps]
 version = "0.3.5"
