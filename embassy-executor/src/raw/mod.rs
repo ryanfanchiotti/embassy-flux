@@ -136,6 +136,7 @@ impl TaskRef {
     }
 
     /// Safety: The pointer must have been obtained with `Task::as_ptr`
+    #[flux::spec(fn (ptr: *const[@p] TaskHeader) -> TaskRef requires p.addr != 0)]
     pub(crate) unsafe fn from_ptr(ptr: *const TaskHeader) -> Self {
         Self {
             ptr: NonNull::new_unchecked(ptr as *mut TaskHeader),

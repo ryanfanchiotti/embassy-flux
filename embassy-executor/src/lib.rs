@@ -162,6 +162,7 @@ pub mod _export {
         }
     }
 
+    #[flux::trusted]
     pub const fn task_pool_size<F, Args, Fut, const POOL_SIZE: usize>(_: F) -> usize
     where
         F: TaskFn<Args, Fut = Fut>,
@@ -170,6 +171,7 @@ pub mod _export {
         size_of::<TaskPool<Fut, POOL_SIZE>>()
     }
 
+    #[flux::trusted]
     pub const fn task_pool_align<F, Args, Fut, const POOL_SIZE: usize>(_: F) -> usize
     where
         F: TaskFn<Args, Fut = Fut>,

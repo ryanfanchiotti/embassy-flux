@@ -8,6 +8,7 @@ unsafe fn clone(p: *const ()) -> RawWaker {
     RawWaker::new(p, &VTABLE)
 }
 
+#[flux::spec(fn (ptr: *const[@p] ()) requires p.addr != 0)]
 unsafe fn wake(p: *const ()) {
     wake_task(TaskRef::from_ptr(p as *const TaskHeader))
 }
@@ -45,5 +46,9 @@ pub(crate) fn try_task_from_waker(waker: &Waker) -> Option<TaskRef> {
         return None;
     }
     // safety: our wakers are always created with `TaskRef::as_ptr`
-    Some(unsafe { TaskRef::from_ptr(waker.data() as *const TaskHeader) })
+    let data = waker.data();
+    if data.is_null() {
+        return None;
+    }
+    Some(unsafe { TaskRef::from_ptr(data as *const TaskHeader) })
 }

@@ -8,6 +8,15 @@ impl<T> UninitCell<T> {
         Self(MaybeUninit::uninit())
     }
 
+    // I think this is a property of UnsafeCell. Maybe can express it in specs for core?
+    // We don't need to show that the data is initted. In fact it probably isn't mostly,
+    // and that's not UB
+    #[flux::spec(fn (&UninitCell<T>) ->
+        *mut{p: p.addr % T::align_of() == 0 &&
+                (T::size_of() == 0 ||
+                    (p.addr != 0 && p.addr >= p.base &&
+                        T::size_of() <= p.size && p.size >= 0))} T)]
+    #[flux::trusted]
     pub unsafe fn as_mut_ptr(&self) -> *mut T {
         (*self.0.as_ptr()).get()
     }
@@ -22,6 +31,7 @@ impl<T> UninitCell<T> {
         ptr::write(self.as_mut_ptr(), func())
     }
 
+    #[flux::spec(fn (me: &UninitCell<T>))]
     pub unsafe fn drop_in_place(&self) {
         ptr::drop_in_place(self.as_mut_ptr())
     }
